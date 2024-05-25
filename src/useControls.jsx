@@ -2,35 +2,34 @@ import { useEffect, useState } from "react";
 
 export const useControls = (vehicleApi, chassisApi) => {
   let [controls, setControls] = useState({
-    // w: boolean,   
-    // a: boolean,   
-    // s: boolean,   
-    // d: boolean,   
-
-    // r: boolean,   
+    // w: boolean,
+    // a: boolean,
+    // s: boolean,
+    // d: boolean,
+    // r: boolean,
   });
 
   useEffect(() => {
     const keyDownPressHandler = (e) => {
-      setControls((controls) => ({ 
-        ...controls, 
-        [e.key.toLowerCase()]: true 
+      setControls((controls) => ({
+        ...controls,
+        [e.key.toLowerCase()]: true,
       }));
-    }
+    };
 
     const keyUpPressHandler = (e) => {
-      setControls((controls) => ({ 
-        ...controls, 
-        [e.key.toLowerCase()]: false 
+      setControls((controls) => ({
+        ...controls,
+        [e.key.toLowerCase()]: false,
       }));
-    }
-  
+    };
+
     window.addEventListener("keydown", keyDownPressHandler);
     window.addEventListener("keyup", keyUpPressHandler);
     return () => {
       window.removeEventListener("keydown", keyDownPressHandler);
       window.removeEventListener("keyup", keyUpPressHandler);
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -56,25 +55,38 @@ export const useControls = (vehicleApi, chassisApi) => {
       vehicleApi.setSteeringValue(0.1, 0);
       vehicleApi.setSteeringValue(0.1, 1);
     } else {
-      for(let i = 0; i < 4; i++) {
+      for (let i = 0; i < 4; i++) {
         vehicleApi.setSteeringValue(0, i);
       }
     }
 
-    if(controls.arrowdown)  chassisApi.applyLocalImpulse([0,-5,0], [0,0,+1]);
-    if(controls.arrowup)    chassisApi.applyLocalImpulse([0,-5,0], [0,0,-1]);
-    if(controls.arrowleft)  chassisApi.applyLocalImpulse([0,-5,0], [-0.5, 0,0]);
-    if(controls.arrowright) chassisApi.applyLocalImpulse([0,-5,0], [+0.5,0,0]);
+    if (controls.space) {
+      // Applying handbrake
+      console.log("Applying handbrake");
+      for (let i = 0; i < 4; i++) {
+        vehicleApi.setBrake(20, i);
+      }
+    } else {
+      for (let i = 0; i < 4; i++) {
+        vehicleApi.setBrake(0, i);
+      }
+    }
 
-    if(controls.r) {
+    if (controls.arrowdown)
+      chassisApi.applyLocalImpulse([0, -5, 0], [0, 0, +1]);
+    if (controls.arrowup) chassisApi.applyLocalImpulse([0, -5, 0], [0, 0, -1]);
+    if (controls.arrowleft)
+      chassisApi.applyLocalImpulse([0, -5, 0], [-0.5, 0, 0]);
+    if (controls.arrowright)
+      chassisApi.applyLocalImpulse([0, -5, 0], [+0.5, 0, 0]);
+
+    if (controls.r) {
       chassisApi.position.set(-1.5, 0.5, 3);
       chassisApi.velocity.set(0, 0, 0);
       chassisApi.angularVelocity.set(0, 0, 0);
       chassisApi.rotation.set(0, 0, 0);
     }
-
-
   }, [controls, vehicleApi, chassisApi]);
 
   return controls;
-}
+};

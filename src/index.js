@@ -27,6 +27,25 @@ function App() {
           </ul>
         </div>
       </div>
+      <div className="controls">
+        <div>
+          <div>w</div>
+        </div>
+        <div>
+          <div>a</div>
+          <div>s</div>
+          <div>d</div>
+        </div>
+      </div>
+
+      <div className="additionalControls">
+        <p>
+          <span>K</span> to toggle view.
+        </p>
+        <p>
+          <span>R</span> to reset the car position.
+        </p>
+      </div>
     </>
   );
 }
