@@ -15,7 +15,7 @@ function App() {
           <Scene />
         </Physics>
       </Canvas>
-      <Toaster />
+      {/* <Toaster /> */}
 
       <div id="myModal" class="modal">
         <div class="modal-content">
@@ -45,6 +45,9 @@ function App() {
         <p>
           <span>R</span> to reset the car position.
         </p>
+      </div>
+      <div className="score">
+        <p id="score"></p>
       </div>
     </>
   );

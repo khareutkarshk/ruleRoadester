@@ -29,6 +29,9 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <div className="score">
+      <p id="score">Score: 0</p>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -40,4 +43,73 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script>
+    // Define your variable
+    localStorage.clear();
+
+    // Define the increment value
+    const increment = 1;
+
+    // Define the number of iterations
+    const iterations = 1000;
+
+    let hasWKeyPressed = false; // Flag to track if "w" key has been pressed before
+
+    let timeoutId;
+
+    let value = 0;
+
+    // Define a function to increase the variable linearly
+    function increaseLinearly(iteration) {
+      if (iteration >= iterations) return;
+      value = parseInt(localStorage.getItem("score") ?? 0);
+
+      value += increment;
+      // console.log(value); // Print the current value
+
+      // Call the function recursively after a delay
+      timeoutID = setTimeout(() => {
+        increaseLinearly(iteration + 1);
+      }, 2000); // Delay in milliseconds, e.g., 1000 ms = 1 second
+      const score = document.getElementById("score");
+      const sco = value ?? 0;
+      score.innerHTML = "Score: " + sco;
+      localStorage.setItem("score", sco);
+    }
+
+    // Function to handle key press events
+    function handleKeyPress(event) {
+      // Check if the pressed key is "w"
+      if (event.key === "w") {
+        if (!hasWKeyPressed) {
+          // Check if "w" key has been pressed before
+          hasWKeyPressed = true; // Set the flag to true
+          startIncreasing(); // Start increasing only if it's the first time "w" is pressed
+        }
+      }
+
+      // Check if the pressed key is "r"
+      if (event.key === "r") {
+        resetValue(); // Reset the value when "r" is pressed
+      }
+    }
+
+    // Function to start increasing the variable
+    function startIncreasing() {
+      value = 0; // Reset the value
+      increaseLinearly(0); // Start increasing
+    }
+
+    // Function to reset the value
+    function resetValue() {
+      localStorage.clear();
+      clearInterval(timeoutId); // Clear any existing interval
+      value = 0; // Reset the value
+      const score = document.getElementById("score");
+      score.innerHTML = "Score: " + value;
+    }
+
+    // Event listener for key press events
+    document.addEventListener("keydown", handleKeyPress);
+  </script>
 </html>
